@@ -40,7 +40,7 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;bor
 
 <div class="grid">
 <section class="card"><h2>Datos de la Planilla</h2>
-<label>Fecha</label><input type="date" >
+<label>Fecha</label><input id="planilla-fecha" type="date">
 <label>Colaborador</label><select><option>Seleccionar colaborador</option></select>
 <label>Estado de la Planilla</label><div style="margin-top:7px"><span class="badge pending">Abierta</span></div>
 <div class="toolbar"><button class="primary">＋ Crear</button><button class="secondary">Cancelar</button></div>
@@ -104,6 +104,16 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;bor
 </section>
 </div>
 </main></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const fecha = document.getElementById('planilla-fecha');
+  if(!fecha || fecha.value) return;
+  const hoy = new Date();
+  const fechaLocal = new Date(hoy.getTime() - hoy.getTimezoneOffset() * 60000);
+  fecha.value = fechaLocal.toISOString().slice(0, 10);
+});
+</script>
 
 <script>
 function toggleActivity(el){
