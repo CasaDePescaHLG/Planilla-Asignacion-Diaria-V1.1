@@ -1,247 +1,1439 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Casa de Pesca HLG — Planilla de Asignación Diaria</title>
-<style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#1f2937}
-header{height:70px;background:#0d2d52;color:#fff;display:flex;align-items:center;padding:0 22px;font-weight:800}
-.layout{display:flex;min-height:calc(100vh - 70px)}aside{width:235px;background:#fff;border-right:1px solid #dbe3ec;padding:18px 12px}
-.nav{display:block;padding:11px 12px;margin:3px 0;border-radius:9px;color:#26384d;text-decoration:none;font-weight:700;font-size:14px}.nav.active,.nav:hover{background:#eaf0f7;color:#0d2d52}
-.title{font-size:11px;color:#7a8797;margin:13px 10px 6px;font-weight:800;text-transform:uppercase}
-main{flex:1;padding:28px;max-width:1180px}.top{display:flex;justify-content:space-between;gap:15px;align-items:center}.top h1{margin:0;color:#0d2d52;font-size:24px}.top p{color:#64748b}
-.grid{display:grid;grid-template-columns:310px 1fr;gap:17px}.card{background:#fff;border:1px solid #dbe3ec;border-radius:15px;padding:18px}
-h2{font-size:17px;color:#0d2d52;margin:0 0 14px}h3{font-size:14px;color:#0d2d52;margin:0 0 10px}
-label{display:block;font-size:12px;font-weight:800;margin:12px 0 5px}input,select,textarea{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;font-size:14px}
-button{border:0;border-radius:8px;padding:10px 13px;font-weight:800;cursor:pointer}.primary{background:#0d2d52;color:#fff}.secondary{background:#eaf0f7;color:#0d2d52}.danger{background:#fff0f0;color:#a32c2c}
-.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.full{grid-column:1/-1}.small{font-size:12px;color:#64748b}
-.empty{text-align:center;padding:25px;border:2px dashed #dbe3ec;border-radius:12px;color:#64748b}
-.activity{border:1px solid #dbe3ec;border-radius:10px;margin:6px 0;overflow:hidden;background:#fff}.activity .head{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:9px 11px;cursor:pointer;min-height:38px}.activity strong{color:#1f2937;font-size:13px}.activity .head:before{content:'▸';font-size:12px;color:#64748b;margin-right:2px}.activity.open .head:before{content:'▾'}.activity .details{display:none;padding:0 11px 10px}.activity.open .details{display:block}
-.badge{border-radius:99px;padding:4px 8px;font-size:11px;font-weight:800}.pending{background:#fff7dc;color:#8a6500}.done{background:#e9f8f2;color:#147b58}.notdone{background:#ffe9e9;color:#a32c2c}.closed{background:#eef2f7;color:#475569}
-.note{margin-top:8px;color:#475569;font-size:13px}.preview{background:#f8fafc;border:1px solid #dbe3ec;border-radius:12px;padding:15px}
-table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;border-bottom:1px solid #e2e8f0;font-size:13px}th{font-size:12px;color:#64748b}
-@media(max-width:780px){aside{display:none}.grid{grid-template-columns:1fr}.full{grid-column:auto}.top{align-items:flex-start;flex-direction:column}main{padding:18px}}
-.extra-activity{display:none}.show-extra .extra-activity{display:block}#moreActivities{min-width:150px}
-.preview-extra{display:table-row !important}
-.preview-extra[style*="display:none"]{display:none !important}
-.preview-expanded .preview-extra{display:table-row !important}
-</style></head>
-<body>
-<header>CASA DE PESCA HLG</header>
-<div class="layout"><aside>
-<a class="nav active" href="#inicio">🏠 Inicio</a>
-<div class="title">Planillas</div><a class="nav" href="#planillas">📋 Planillas</a>
-<div class="title">Consultas</div><a class="nav" href="#historial">📚 Historial</a>
-<div class="title">Administración</div><a class="nav" href="#colaboradores">👥 Colaboradores</a><a class="nav" href="#actividades">📝 Actividades</a>
-<div class="title">Sistema</div><a class="nav" href="#configuracion">⚙️ Configuración</a>
-</aside>
-<main id="inicio">
-<div class="top"><div><h1>Planilla de Asignación Diaria</h1><p>Construcción integral — Administrador</p></div><button id="guardar-planilla" type="button" class="primary" disabled>💾 Guardar Planilla</button></div>
 
-<section class="card" id="acceso-panel" style="margin:0 0 17px"><h2>Acceso del administrador</h2><div class="small" id="estado-acceso">Ingresa con tu correo para guardar planillas.</div><div class="toolbar"><input id="correo-acceso" type="email" placeholder="Correo del administrador" aria-label="Correo del administrador"><button id="accion-acceso" type="button" class="secondary">Enviar enlace seguro</button></div></section>
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f7fb;
+  color:#1f2937
+}
+
+header{
+  height:70px;
+  background:#0d2d52;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  padding:0 22px;
+  font-weight:800
+}
+
+.layout{
+  display:flex;
+  min-height:calc(100vh - 70px)
+}
+
+aside{
+  width:235px;
+  background:#fff;
+  border-right:1px solid #dbe3ec;
+  padding:18px 12px
+}
+
+.nav{
+  display:block;
+  padding:11px 12px;
+  margin:3px 0;
+  border-radius:9px;
+  color:#26384d;
+  text-decoration:none;
+  font-weight:700;
+  font-size:14px
+}
+
+.nav.active,
+.nav:hover{
+  background:#eaf0f7;
+  color:#0d2d52
+}
+
+.title{
+  font-size:11px;
+  color:#7a8797;
+  margin:13px 10px 6px;
+  font-weight:800;
+  text-transform:uppercase
+}
+
+main{
+  flex:1;
+  padding:28px;
+  max-width:1180px
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  align-items:center
+}
+
+.top h1{
+  margin:0;
+  color:#0d2d52;
+  font-size:24px
+}
+
+.top p{
+  color:#64748b
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:310px 1fr;
+  gap:17px
+}
+
+.card{
+  background:#fff;
+  border:1px solid #dbe3ec;
+  border-radius:15px;
+  padding:18px
+}
+
+h2{
+  font-size:17px;
+  color:#0d2d52;
+  margin:0 0 14px
+}
+
+h3{
+  font-size:14px;
+  color:#0d2d52;
+  margin:0 0 10px
+}
+
+label{
+  display:block;
+  font-size:12px;
+  font-weight:800;
+  margin:12px 0 5px
+}
+
+input,
+select,
+textarea{
+  width:100%;
+  padding:10px;
+  border:1px solid #cbd5e1;
+  border-radius:8px;
+  font-size:14px
+}
+
+button{
+  border:0;
+  border-radius:8px;
+  padding:10px 13px;
+  font-weight:800;
+  cursor:pointer
+}
+
+.primary{
+  background:#0d2d52;
+  color:#fff
+}
+
+.secondary{
+  background:#eaf0f7;
+  color:#0d2d52
+}
+
+.danger{
+  background:#fff0f0;
+  color:#a32c2c
+}
+
+.toolbar{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:14px 0
+}
+
+.full{
+  grid-column:1/-1
+}
+
+.small{
+  font-size:12px;
+  color:#64748b
+}
+
+.empty{
+  text-align:center;
+  padding:25px;
+  border:2px dashed #dbe3ec;
+  border-radius:12px;
+  color:#64748b
+}
+
+.activity{
+  border:1px solid #dbe3ec;
+  border-radius:10px;
+  margin:6px 0;
+  overflow:hidden;
+  background:#fff
+}
+
+.activity .head{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  align-items:center;
+  padding:9px 11px;
+  cursor:pointer;
+  min-height:38px
+}
+
+.activity strong{
+  color:#1f2937;
+  font-size:13px
+}
+
+.activity .head:before{
+  content:'▸';
+  font-size:12px;
+  color:#64748b;
+  margin-right:2px
+}
+
+.activity.open .head:before{
+  content:'▾'
+}
+
+.activity .details{
+  display:none;
+  padding:0 11px 10px
+}
+
+.activity.open .details{
+  display:block
+}
+
+.badge{
+  border-radius:99px;
+  padding:4px 8px;
+  font-size:11px;
+  font-weight:800
+}
+
+.pending{
+  background:#fff7dc;
+  color:#8a6500
+}
+
+.done{
+  background:#e9f8f2;
+  color:#147b58
+}
+
+.notdone{
+  background:#ffe9e9;
+  color:#a32c2c
+}
+
+.closed{
+  background:#eef2f7;
+  color:#475569
+}
+
+.note{
+  margin-top:8px;
+  color:#475569;
+  font-size:13px
+}
+
+.preview{
+  background:#f8fafc;
+  border:1px solid #dbe3ec;
+  border-radius:12px;
+  padding:15px
+}
+
+table{
+  width:100%;
+  border-collapse:collapse
+}
+
+th,
+td{
+  text-align:left;
+  padding:11px;
+  border-bottom:1px solid #e2e8f0;
+  font-size:13px
+}
+
+th{
+  font-size:12px;
+  color:#64748b
+}
+
+@media(max-width:780px){
+  aside{
+    display:none
+  }
+
+  .grid{
+    grid-template-columns:1fr
+  }
+
+  .full{
+    grid-column:auto
+  }
+
+  .top{
+    align-items:flex-start;
+    flex-direction:column
+  }
+
+  main{
+    padding:18px
+  }
+}
+
+.extra-activity{
+  display:none
+}
+
+.show-extra .extra-activity{
+  display:block
+}
+
+#moreActivities{
+  min-width:150px
+}
+
+.preview-extra{
+  display:table-row !important
+}
+
+.preview-extra[style*="display:none"]{
+  display:none !important
+}
+
+.preview-expanded .preview-extra{
+  display:table-row !important
+}
+</style>
+</head>
+
+<body>
+
+<header>CASA DE PESCA HLG</header>
+
+<div class="layout">
+
+<aside>
+
+<a class="nav active" href="#inicio">🏠 Inicio</a>
+
+<div class="title">Planillas</div>
+<a class="nav" href="#planillas">📋 Planillas</a>
+
+<div class="title">Consultas</div>
+<a class="nav" href="#historial">📚 Historial</a>
+
+<div class="title">Administración</div>
+<a class="nav" href="#colaboradores">👥 Colaboradores</a>
+<a class="nav" href="#actividades">📝 Actividades</a>
+
+<div class="title">Sistema</div>
+<a class="nav" href="#configuracion">⚙️ Configuración</a>
+
+</aside>
+
+<main id="inicio">
+
+<div class="top">
+
+<div>
+<h1>Planilla de Asignación Diaria</h1>
+<p>Construcción integral — Administrador</p>
+</div>
+
+<button id="guardar-planilla" type="button" class="primary" disabled>
+💾 Guardar Planilla
+</button>
+
+</div>
+
+<section class="card" id="acceso-panel" style="margin:0 0 17px">
+
+<h2>Acceso del administrador</h2>
+
+<div class="small" id="estado-acceso">
+Ingresa con tu correo para guardar planillas.
+</div>
+
+<div class="toolbar">
+
+<input
+id="correo-acceso"
+type="email"
+placeholder="Correo del administrador"
+aria-label="Correo del administrador"
+>
+
+<button id="accion-acceso" type="button" class="secondary">
+Enviar enlace seguro
+</button>
+
+</div>
+
+</section>
 
 <div class="grid">
-<section class="card"><h2>Datos de la Planilla</h2>
-<label>Fecha</label><input id="planilla-fecha" type="date">
-<label>Colaborador</label><select id="planilla-colaborador"><option>Seleccionar colaborador</option></select>
-<label>Estado de la Planilla</label><div style="margin-top:7px"><span class="badge pending">Abierta</span></div>
-<div class="toolbar"><button class="primary">＋ Crear</button><button class="secondary">Cancelar</button></div>
-</section>
 
-<section class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h2>Actividades asignadas</h2><span class="small">Actividades aprobadas</span></div>
-<div class="activity"><div class="head" onclick="toggleActivity(this.parentElement)"><strong>1. Pedido de:</strong><span class="badge pending">Pendiente</span></div><div class="details"><div class="note">Hacer pedido de Guantes, Mochilas, Linternas</div><label>Nota</label><input placeholder="Nota opcional"></div></div>
-<div class="activity"><div class="head" onclick="toggleActivity(this.parentElement)"><strong>2. Pedido a:</strong><span class="badge pending">Pendiente</span></div><div class="details"><div class="note">Sabalito SC, Cabral, Orlando, Silvia, Victoriano, Franz Magne</div><label>Nota</label><input placeholder="Nota opcional"></div></div>
-<div class="activity"><div class="head" onclick="toggleActivity(this.parentElement)"><strong>3. Reparación Vara de:</strong><span class="badge pending">Pendiente</span></div><div class="details"><div class="note">Completar según corresponda.</div><label>Nota</label><input placeholder="Nota opcional"></div></div>
-<div class="activity extra-activity"><div class="head" onclick="toggleActivity(this.parentElement)"><strong>4. Reparación Molinete de:</strong><span class="badge pending">Pendiente</span></div><div class="details"><div class="note">Completar según corresponda.</div><label>Nota</label><input placeholder="Nota opcional"></div></div>
-<div class="activity extra-activity"><div class="head" onclick="toggleActivity(this.parentElement)"><strong>5. Reparación Carretilla de:</strong><span class="badge pending">Pendiente</span></div><div class="details"><div class="note">Completar según corresponda.</div><label>Nota</label><input placeholder="Nota opcional"></div></div>
-<div class="activity extra-activity"><div class="head" onclick="toggleActivity(this.parentElement)"><strong>6. Códigos:</strong><span class="badge pending">Pendiente</span></div><div class="details"><div class="note">Crear códigos de artículos inexistente, nuevos artículos</div><label>Nota</label><input placeholder="Nota opcional"></div></div>
-<div class="activity extra-activity"><div class="head" onclick="toggleActivity(this.parentElement)"><strong>7. Inventario:</strong><span class="badge pending">Pendiente</span></div><div class="details"><div class="note">Revisar la lista completa de artículos, Corregir saldos negativos</div><label>Nota</label><input placeholder="Nota opcional"></div></div>
-<div class="activity extra-activity"><div class="head" onclick="toggleActivity(this.parentElement)"><strong>8. Pedido al Brasil de:</strong><span class="badge pending">Pendiente</span></div><div class="details"><div class="note">Techno Gun, Ali Express, Mercado Libre</div><label>Nota</label><input placeholder="Nota opcional"></div></div>
-<div class="activity extra-activity"><div class="head" onclick="toggleActivity(this.parentElement)"><strong>9. Poleras:</strong><span class="badge pending">Pendiente</span></div><div class="details"><div class="note">Diseñar nuevos modelos, Revisar tallas existentes</div><label>Nota</label><input placeholder="Nota opcional"></div></div>
-<div class="activity extra-activity"><div class="head" onclick="toggleActivity(this.parentElement)"><strong>10. Contadora:</strong><span class="badge pending">Pendiente</span></div><div class="details"><div class="note">Nota de servicio, Gestora, CNS, Impuestos</div><label>Nota</label><input placeholder="Nota opcional"></div></div>
-<div class="activity extra-activity"><div class="head" onclick="toggleActivity(this.parentElement)"><strong>11. Revisar Precios de:</strong><span class="badge pending">Pendiente</span></div><div class="details"><div class="note">Empalmes, Tablas, Anzuelos</div><label>Nota</label><input placeholder="Nota opcional"></div></div>
-<div class="activity extra-activity"><div class="head" onclick="toggleActivity(this.parentElement)"><strong>12. Comprar:</strong><span class="badge pending">Pendiente</span></div><div class="details"><div class="note">Agua, Almuerzo, Merienda</div><label>Nota</label><input placeholder="Nota opcional"></div></div>
-<div class="activity extra-activity"><div class="head" onclick="toggleActivity(this.parentElement)"><strong>13. Cotizaciones de:</strong><span class="badge pending">Pendiente</span></div><div class="details"><div class="note">Hacer cotizaciones de Mochila, Cajas, etc.</div><label>Nota</label><input placeholder="Nota opcional"></div></div>
-<div class="activity extra-activity"><div class="head" onclick="toggleActivity(this.parentElement)"><strong>14. Compras locales:</strong><span class="badge pending">Pendiente</span></div><div class="details"><div class="note">Hacer lista de artículos, Programar compras</div><label>Nota</label><input placeholder="Nota opcional"></div></div>
-<div class="activity extra-activity"><div class="head" onclick="toggleActivity(this.parentElement)"><strong>15. Campeonato de:</strong><span class="badge pending">Pendiente</span></div><div class="details"><div class="note">Preparar, Comprar artículos para llevar</div><label>Nota</label><input placeholder="Nota opcional"></div></div>
-<div class="activity extra-activity"><div class="head" onclick="toggleActivity(this.parentElement)"><strong>16. Recoger mercadería de:</strong><span class="badge pending">Pendiente</span></div><div class="details"><div class="note">Flota, Avión, Trufis</div><label>Nota</label><input placeholder="Nota opcional"></div></div>
-<div class="activity extra-activity"><div class="head" onclick="toggleActivity(this.parentElement)"><strong>17. Enviar mensaje a:</strong><span class="badge pending">Pendiente</span></div><div class="details"><div class="note">Completar según corresponda.</div><label>Nota</label><input placeholder="Nota opcional"></div></div>
-<div class="toolbar" style="margin-top:8px"><button type="button" class="secondary" id="moreActivities" onclick="toggleMoreActivities()">＋ Ver más actividades</button></div>
-<div class="toolbar" style="margin-top:8px"><button class="primary">＋ Agregar Actividad</button><button class="secondary">Reordenar</button></div>
-</section>
-<section class="card full"><h2>Vista de la Planilla</h2><div class="preview">
-<h3>📋 PLANILLA DE ASIGNACIÓN DIARIA</h3><div class="small">📅 28/08/2026 &nbsp; · &nbsp; 👤 Colaborador</div>
-<table style="margin-top:12px"><thead><tr><th>#</th><th>Actividad</th><th>Estado</th><th>Nota</th></tr></thead>
-<tbody>
-<tr><td>1</td><td>Pedido de:</td><td><span class="badge pending">Pendiente</span></td><td>Hacer pedido de Guantes, Mochilas, Linternas</td></tr>
-<tr><td>2</td><td>Pedido a:</td><td><span class="badge pending">Pendiente</span></td><td>Sabalito SC, Cabral, Orlando, Silvia, Victoriano, Franz Magne</td></tr>
-<tr><td>3</td><td>Reparación Vara de:</td><td><span class="badge pending">Pendiente</span></td><td>—</td></tr>
-<tr><td>4</td><td>Reparación Molinete de:</td><td><span class="badge pending">Pendiente</span></td><td>—</td></tr>
-<tr class="preview-extra" style="display:none"><td>5</td><td>Reparación Carretilla de:</td><td><span class="badge pending">Pendiente</span></td><td>—</td></tr>
-<tr class="preview-extra" style="display:none"><td>6</td><td>Códigos:</td><td><span class="badge pending">Pendiente</span></td><td>Crear códigos de artículos inexistente, nuevos artículos</td></tr>
-<tr class="preview-extra" style="display:none"><td>7</td><td>Inventario:</td><td><span class="badge pending">Pendiente</span></td><td>Revisar la lista completa de artículos, Corregir saldos negativos</td></tr>
-<tr class="preview-extra" style="display:none"><td>8</td><td>Pedido al Brasil de:</td><td><span class="badge pending">Pendiente</span></td><td>Techno Gun, Ali Express, Mercado Libre</td></tr>
-<tr class="preview-extra" style="display:none"><td>9</td><td>Poleras:</td><td><span class="badge pending">Pendiente</span></td><td>Diseñar nuevos modelos, Revisar tallas existentes</td></tr>
-<tr class="preview-extra" style="display:none"><td>10</td><td>Contadora:</td><td><span class="badge pending">Pendiente</span></td><td>Nota de servicio, Gestora, CNS, Impuestos</td></tr>
-<tr class="preview-extra" style="display:none"><td>11</td><td>Revisar Precios de:</td><td><span class="badge pending">Pendiente</span></td><td>Empalmes, Tablas, Anzuelos</td></tr>
-<tr class="preview-extra" style="display:none"><td>12</td><td>Comprar:</td><td><span class="badge pending">Pendiente</span></td><td>Agua, Almuerzo, Merienda</td></tr>
-<tr class="preview-extra" style="display:none"><td>13</td><td>Cotizaciones de:</td><td><span class="badge pending">Pendiente</span></td><td>Hacer cotizaciones de Mochila, Cajas, etc.</td></tr>
-<tr class="preview-extra" style="display:none"><td>14</td><td>Compras locales:</td><td><span class="badge pending">Pendiente</span></td><td>Hacer lista de artículos, Programar compras</td></tr>
-<tr class="preview-extra" style="display:none"><td>15</td><td>Campeonato de:</td><td><span class="badge pending">Pendiente</span></td><td>Preparar, Comprar artículos para llevar</td></tr>
-<tr class="preview-extra" style="display:none"><td>16</td><td>Recoger mercadería de:</td><td><span class="badge pending">Pendiente</span></td><td>Flota, Avión, Trufis</td></tr>
-<tr class="preview-extra" style="display:none"><td>17</td><td>Enviar mensaje a:</td><td><span class="badge pending">Pendiente</span></td><td>—</td></tr>
-</tbody></table><div class="toolbar" style="margin-top:8px"><button type="button" class="secondary" id="morePreview" onclick="togglePreviewRows()">＋ Ver más actividades</button></div>
-</div></section>
+<section class="card">
 
-<section class="card full"><h2>Seguimiento de colaboradores</h2>
-<div class="small">Vista compacta para identificar colaboradores con situaciones que requieren revisión.</div>
-<table style="margin-top:12px"><thead><tr><th>Colaborador</th><th>Situación</th><th>Acción</th></tr></thead>
-<tbody><tr><td>—</td><td><span class="badge pending">Sin seleccionar</span></td><td><button class="secondary">Ver resumen</button></td></tr></tbody></table>
-</section>
+<h2>Datos de la Planilla</h2>
 
-<section class="card full"><h2>Reglas de la Planilla</h2>
-<div class="note"><strong>Cierre automático:</strong> la Planilla se cierra automáticamente a las 23:59.</div>
-<div class="note"><strong>Después del cierre:</strong> el Colaborador no puede realizar modificaciones.</div>
-<div class="note"><strong>Conservación:</strong> la información se conserva como máximo durante 365 días.</div>
-</section>
+<label>Fecha</label>
+<input id="planilla-fecha" type="date">
+
+<label>Colaborador</label>
+
+<select id="planilla-colaborador">
+<option>Seleccionar colaborador</option>
+</select>
+
+<label>Estado de la Planilla</label>
+
+<div style="margin-top:7px">
+<span class="badge pending">Abierta</span>
 </div>
-</main></div>
+
+<div class="toolbar">
+
+<button class="primary">＋ Crear</button>
+<button class="secondary">Cancelar</button>
+
+</div>
+
+</section>
+
+<section class="card">
+
+<div style="display:flex;justify-content:space-between;align-items:center">
+
+<h2>Actividades asignadas</h2>
+
+<span class="small">
+Actividades aprobadas
+</span>
+
+</div>
+
+<div class="activity">
+
+<div class="head" onclick="toggleActivity(this.parentElement)">
+<strong>1. Pedido de:</strong>
+<span class="badge pending">Pendiente</span>
+</div>
+
+<div class="details">
+
+<div class="note">
+Hacer pedido de Guantes, Mochilas, Linternas
+</div>
+
+<label>Nota</label>
+
+<input placeholder="Nota opcional">
+
+</div>
+</div>
+
+<div class="activity">
+
+<div class="head" onclick="toggleActivity(this.parentElement)">
+<strong>2. Pedido a:</strong>
+<span class="badge pending">Pendiente</span>
+</div>
+
+<div class="details">
+
+<div class="note">
+Sabalito SC, Cabral, Orlando, Silvia, Victoriano, Franz Magne
+</div>
+
+<label>Nota</label>
+
+<input placeholder="Nota opcional">
+
+</div>
+</div>
+
+<div class="activity">
+
+<div class="head" onclick="toggleActivity(this.parentElement)">
+<strong>3. Reparación Vara de:</strong>
+<span class="badge pending">Pendiente</span>
+</div>
+
+<div class="details">
+
+<div class="note">
+Completar según corresponda.
+</div>
+
+<label>Nota</label>
+
+<input placeholder="Nota opcional">
+
+</div>
+</div>
+
+<div class="activity extra-activity">
+
+<div class="head" onclick="toggleActivity(this.parentElement)">
+<strong>4. Reparación Molinete de:</strong>
+<span class="badge pending">Pendiente</span>
+</div>
+
+<div class="details">
+
+<div class="note">
+Completar según corresponda.
+</div>
+
+<label>Nota</label>
+
+<input placeholder="Nota opcional">
+
+</div>
+</div>
+
+<div class="activity extra-activity">
+
+<div class="head" onclick="toggleActivity(this.parentElement)">
+<strong>5. Reparación Carretilla de:</strong>
+<span class="badge pending">Pendiente</span>
+</div>
+
+<div class="details">
+
+<div class="note">
+Completar según corresponda.
+</div>
+
+<label>Nota</label>
+
+<input placeholder="Nota opcional">
+
+</div>
+</div>
+
+<div class="activity extra-activity">
+
+<div class="head" onclick="toggleActivity(this.parentElement)">
+<strong>6. Códigos:</strong>
+<span class="badge pending">Pendiente</span>
+</div>
+
+<div class="details">
+
+<div class="note">
+Crear códigos de artículos inexistente, nuevos artículos
+</div>
+
+<label>Nota</label>
+
+<input placeholder="Nota opcional">
+
+</div>
+</div>
+
+<div class="activity extra-activity">
+
+<div class="head" onclick="toggleActivity(this.parentElement)">
+<strong>7. Inventario:</strong>
+<span class="badge pending">Pendiente</span>
+</div>
+
+<div class="details">
+
+<div class="note">
+Revisar la lista completa de artículos, Corregir saldos negativos
+</div>
+
+<label>Nota</label>
+
+<input placeholder="Nota opcional">
+
+</div>
+</div>
+
+<div class="activity extra-activity">
+
+<div class="head" onclick="toggleActivity(this.parentElement)">
+<strong>8. Pedido al Brasil de:</strong>
+<span class="badge pending">Pendiente</span>
+</div>
+
+<div class="details">
+
+<div class="note">
+Techno Gun, Ali Express, Mercado Libre
+</div>
+
+<label>Nota</label>
+
+<input placeholder="Nota opcional">
+
+</div>
+</div>
+
+<div class="activity extra-activity">
+
+<div class="head" onclick="toggleActivity(this.parentElement)">
+<strong>9. Poleras:</strong>
+<span class="badge pending">Pendiente</span>
+</div>
+
+<div class="details">
+
+<div class="note">
+Diseñar nuevos modelos, Revisar tallas existentes
+</div>
+
+<label>Nota</label>
+
+<input placeholder="Nota opcional">
+
+</div>
+</div>
+
+<div class="activity extra-activity">
+
+<div class="head" onclick="toggleActivity(this.parentElement)">
+<strong>10. Contadora:</strong>
+<span class="badge pending">Pendiente</span>
+</div>
+
+<div class="details">
+
+<div class="note">
+Nota de servicio, Gestora, CNS, Impuestos
+</div>
+
+<label>Nota</label>
+
+<input placeholder="Nota opcional">
+
+</div>
+</div>
+
+<div class="activity extra-activity">
+
+<div class="head" onclick="toggleActivity(this.parentElement)">
+<strong>11. Revisar Precios de:</strong>
+<span class="badge pending">Pendiente</span>
+</div>
+
+<div class="details">
+
+<div class="note">
+Empalmes, Tablas, Anzuelos
+</div>
+
+<label>Nota</label>
+
+<input placeholder="Nota opcional">
+
+</div>
+</div>
+
+<div class="activity extra-activity">
+
+<div class="head" onclick="toggleActivity(this.parentElement)">
+<strong>12. Comprar:</strong>
+<span class="badge pending">Pendiente</span>
+</div>
+
+<div class="details">
+
+<div class="note">
+Agua, Almuerzo, Merienda
+</div>
+
+<label>Nota</label>
+
+<input placeholder="Nota opcional">
+
+</div>
+</div>
+
+<div class="activity extra-activity">
+
+<div class="head" onclick="toggleActivity(this.parentElement)">
+<strong>13. Cotizaciones de:</strong>
+<span class="badge pending">Pendiente</span>
+</div>
+
+<div class="details">
+
+<div class="note">
+Hacer cotizaciones de Mochila, Cajas, etc.
+</div>
+
+<label>Nota</label>
+
+<input placeholder="Nota opcional">
+
+</div>
+</div>
+
+<div class="activity extra-activity">
+
+<div class="head" onclick="toggleActivity(this.parentElement)">
+<strong>14. Compras locales:</strong>
+<span class="badge pending">Pendiente</span>
+</div>
+
+<div class="details">
+
+<div class="note">
+Hacer lista de artículos, Programar compras
+</div>
+
+<label>Nota</label>
+
+<input placeholder="Nota opcional">
+
+</div>
+</div>
+
+<div class="activity extra-activity">
+
+<div class="head" onclick="toggleActivity(this.parentElement)">
+<strong>15. Campeonato de:</strong>
+<span class="badge pending">Pendiente</span>
+</div>
+
+<div class="details">
+
+<div class="note">
+Preparar, Comprar artículos para llevar
+</div>
+
+<label>Nota</label>
+
+<input placeholder="Nota opcional">
+
+</div>
+</div>
+
+<div class="activity extra-activity">
+
+<div class="head" onclick="toggleActivity(this.parentElement)">
+<strong>16. Recoger mercadería de:</strong>
+<span class="badge pending">Pendiente</span>
+</div>
+
+<div class="details">
+
+<div class="note">
+Flota, Avión, Trufis
+</div>
+
+<label>Nota</label>
+
+<input placeholder="Nota opcional">
+
+</div>
+</div>
+
+<div class="activity extra-activity">
+
+<div class="head" onclick="toggleActivity(this.parentElement)">
+<strong>17. Enviar mensaje a:</strong>
+<span class="badge pending">Pendiente</span>
+</div>
+
+<div class="details">
+
+<div class="note">
+Completar según corresponda.
+</div>
+
+<label>Nota</label>
+
+<input placeholder="Nota opcional">
+
+</div>
+</div>
+
+<div class="toolbar" style="margin-top:8px">
+
+<button
+type="button"
+class="secondary"
+id="moreActivities"
+onclick="toggleMoreActivities()"
+>
+＋ Ver más actividades
+</button>
+
+</div>
+
+<div class="toolbar" style="margin-top:8px">
+
+<button class="primary">
+＋ Agregar Actividad
+</button>
+
+<button class="secondary">
+Reordenar
+</button>
+
+</div>
+
+</section>
+
+<section class="card full">
+
+<h2>Vista de la Planilla</h2>
+
+<div class="preview">
+
+<h3>📋 PLANILLA DE ASIGNACIÓN DIARIA</h3>
+
+<div class="small">
+📅 28/08/2026 &nbsp; · &nbsp; 👤 Colaborador
+</div>
+
+<table style="margin-top:12px">
+
+<thead>
+
+<tr>
+<th>#</th>
+<th>Actividad</th>
+<th>Estado</th>
+<th>Nota</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>1</td>
+<td>Pedido de:</td>
+<td><span class="badge pending">Pendiente</span></td>
+<td>Hacer pedido de Guantes, Mochilas, Linternas</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>Pedido a:</td>
+<td><span class="badge pending">Pendiente</span></td>
+<td>Sabalito SC, Cabral, Orlando, Silvia, Victoriano, Franz Magne</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>Reparación Vara de:</td>
+<td><span class="badge pending">Pendiente</span></td>
+<td>—</td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>Reparación Molinete de:</td>
+<td><span class="badge pending">Pendiente</span></td>
+<td>—</td>
+</tr>
+
+<tr class="preview-extra" style="display:none">
+<td>5</td>
+<td>Reparación Carretilla de:</td>
+<td><span class="badge pending">Pendiente</span></td>
+<td>—</td>
+</tr>
+
+<tr class="preview-extra" style="display:none">
+<td>6</td>
+<td>Códigos:</td>
+<td><span class="badge pending">Pendiente</span></td>
+<td>Crear códigos de artículos inexistente, nuevos artículos</td>
+</tr>
+
+<tr class="preview-extra" style="display:none">
+<td>7</td>
+<td>Inventario:</td>
+<td><span class="badge pending">Pendiente</span></td>
+<td>Revisar la lista completa de artículos, Corregir saldos negativos</td>
+</tr>
+
+<tr class="preview-extra" style="display:none">
+<td>8</td>
+<td>Pedido al Brasil de:</td>
+<td><span class="badge pending">Pendiente</span></td>
+<td>Techno Gun, Ali Express, Mercado Libre</td>
+</tr>
+
+<tr class="preview-extra" style="display:none">
+<td>9</td>
+<td>Poleras:</td>
+<td><span class="badge pending">Pendiente</span></td>
+<td>Diseñar nuevos modelos, Revisar tallas existentes</td>
+</tr>
+
+<tr class="preview-extra" style="display:none">
+<td>10</td>
+<td>Contadora:</td>
+<td><span class="badge pending">Pendiente</span></td>
+<td>Nota de servicio, Gestora, CNS, Impuestos</td>
+</tr>
+
+<tr class="preview-extra" style="display:none">
+<td>11</td>
+<td>Revisar Precios de:</td>
+<td><span class="badge pending">Pendiente</span></td>
+<td>Empalmes, Tablas, Anzuelos</td>
+</tr>
+
+<tr class="preview-extra" style="display:none">
+<td>12</td>
+<td>Comprar:</td>
+<td><span class="badge pending">Pendiente</span></td>
+<td>Agua, Almuerzo, Merienda</td>
+</tr>
+
+<tr class="preview-extra" style="display:none">
+<td>13</td>
+<td>Cotizaciones de:</td>
+<td><span class="badge pending">Pendiente</span></td>
+<td>Hacer cotizaciones de Mochila, Cajas, etc.</td>
+</tr>
+
+<tr class="preview-extra" style="display:none">
+<td>14</td>
+<td>Compras locales:</td>
+<td><span class="badge pending">Pendiente</span></td>
+<td>Hacer lista de artículos, Programar compras</td>
+</tr>
+
+<tr class="preview-extra" style="display:none">
+<td>15</td>
+<td>Campeonato de:</td>
+<td><span class="badge pending">Pendiente</span></td>
+<td>Preparar, Comprar artículos para llevar</td>
+</tr>
+
+<tr class="preview-extra" style="display:none">
+<td>16</td>
+<td>Recoger mercadería de:</td>
+<td><span class="badge pending">Pendiente</span></td>
+<td>Flota, Avión, Trufis</td>
+</tr>
+
+<tr class="preview-extra" style="display:none">
+<td>17</td>
+<td>Enviar mensaje a:</td>
+<td><span class="badge pending">Pendiente</span></td>
+<td>—</td>
+</tr>
+
+</tbody>
+
+</table>
+
+<div class="toolbar" style="margin-top:8px">
+
+<button
+type="button"
+class="secondary"
+id="morePreview"
+onclick="togglePreviewRows()"
+>
+＋ Ver más actividades
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="card full">
+
+<h2>Seguimiento de colaboradores</h2>
+
+<div class="small">
+Vista compacta para identificar colaboradores con situaciones que requieren revisión.
+</div>
+
+<table style="margin-top:12px">
+
+<thead>
+
+<tr>
+<th>Colaborador</th>
+<th>Situación</th>
+<th>Acción</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>—</td>
+<td>
+<span class="badge pending">Sin seleccionar</span>
+</td>
+<td>
+<button class="secondary">Ver resumen</button>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</section>
+
+<section class="card full">
+
+<h2>Reglas de la Planilla</h2>
+
+<div class="note">
+<strong>Cierre automático:</strong>
+la Planilla se cierra automáticamente a las 23:59.
+</div>
+
+<div class="note">
+<strong>Después del cierre:</strong>
+el Colaborador no puede realizar modificaciones.
+</div>
+
+<div class="note">
+<strong>Conservación:</strong>
+la información se conserva como máximo durante 365 días.
+</div>
+
+</section>
+
+</div>
+
+</main>
+
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function(){
+
   const fecha = document.getElementById('planilla-fecha');
+
   if(!fecha || fecha.value) return;
+
   const hoy = new Date();
-  const fechaLocal = new Date(hoy.getTime() - hoy.getTimezoneOffset() * 60000);
+
+  const fechaLocal = new Date(
+    hoy.getTime() - hoy.getTimezoneOffset() * 60000
+  );
+
   fecha.value = fechaLocal.toISOString().slice(0, 10);
+
 });
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.4"></script>
-<script>
-const SUPABASE_URL = 'https://jjhghflprexdrtypgbzc.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_ayseY1CkPH5WlyRiMh_H8Q_P0FiLqpm';
-const ADMIN_EMAIL = 'casadepescahlg@gmail.com';
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
-const estadoAcceso = document.getElementById('estado-acceso');
-const correoAcceso = document.getElementById('correo-acceso');
-const accionAcceso = document.getElementById('accion-acceso');
-const guardarPlanilla = document.getElementById('guardar-planilla');
+<script>
+
+const SUPABASE_URL =
+'https://jjhghflprexdrtypgbzc.supabase.co';
+
+const SUPABASE_PUBLISHABLE_KEY =
+'sb_publishable_ayseY1CkPH5WlyRiMh_H8Q_P0FiLqpm';
+
+const ADMIN_EMAIL =
+'casadepescahlg@gmail.com';
+
+const supabaseClient =
+supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+const estadoAcceso =
+document.getElementById('estado-acceso');
+
+const correoAcceso =
+document.getElementById('correo-acceso');
+
+const accionAcceso =
+document.getElementById('accion-acceso');
+
+const guardarPlanilla =
+document.getElementById('guardar-planilla');
+
 
 function mostrarEstado(mensaje){
+
   estadoAcceso.textContent = mensaje;
+
 }
+
 
 function actividadesAsignadas(){
-  return Array.from(document.querySelectorAll('.activity')).map(function(actividad, indice){
-    const titulo = actividad.querySelector('strong');
-    const detalle = actividad.querySelector('.note');
-    const nota = actividad.querySelector('input');
+
+  return Array.from(
+    document.querySelectorAll('.activity')
+  ).map(function(actividad, indice){
+
+    const titulo =
+    actividad.querySelector('strong');
+
+    const detalle =
+    actividad.querySelector('.note');
+
+    const nota =
+    actividad.querySelector('input');
+
     return {
+
       numero: indice + 1,
-      actividad: titulo ? titulo.textContent.trim() : '',
-      detalle: detalle ? detalle.textContent.trim() : '',
-      nota: nota ? nota.value.trim() : '',
+
+      actividad:
+      titulo ? titulo.textContent.trim() : '',
+
+      detalle:
+      detalle ? detalle.textContent.trim() : '',
+
+      nota:
+      nota ? nota.value.trim() : '',
+
       estado: 'Pendiente'
+
     };
+
   });
+
 }
+
 
 async function actualizarAcceso(){
-  const resultado = await supabaseClient.auth.getUser();
-  const usuario = resultado.data.user;
-  const esAdministrador = usuario && usuario.email === ADMIN_EMAIL;
-  guardarPlanilla.disabled = !esAdministrador;
-  correoAcceso.disabled = !!esAdministrador;
-  accionAcceso.textContent = esAdministrador ? 'Cerrar sesión' : 'Enviar enlace seguro';
-  mostrarEstado(esAdministrador ? 'Sesión activa: puedes guardar la planilla.' : 'Ingresa con tu correo para guardar planillas.');
+
+  const resultado =
+  await supabaseClient.auth.getUser();
+
+  const usuario =
+  resultado.data.user;
+
+  const esAdministrador =
+  usuario &&
+  usuario.email === ADMIN_EMAIL;
+
+  guardarPlanilla.disabled =
+  !esAdministrador;
+
+  correoAcceso.disabled =
+  !!esAdministrador;
+
+  accionAcceso.textContent =
+  esAdministrador
+  ? 'Cerrar sesión'
+  : 'Enviar enlace seguro';
+
+  mostrarEstado(
+    esAdministrador
+    ? 'Sesión activa: puedes guardar la planilla.'
+    : 'Ingresa con tu correo para guardar planillas.'
+  );
+
 }
 
-accionAcceso.addEventListener('click', async function(){
-  const resultado = await supabaseClient.auth.getUser();
-  if(resultado.data.user){
-    await supabaseClient.auth.signOut();
-    await actualizarAcceso();
-    return;
+
+accionAcceso.addEventListener(
+  'click',
+  async function(){
+
+    const resultado =
+    await supabaseClient.auth.getUser();
+
+    if(resultado.data.user){
+
+      await supabaseClient.auth.signOut();
+
+      await actualizarAcceso();
+
+      return;
+
+    }
+
+    const correo =
+    correoAcceso.value
+    .trim()
+    .toLowerCase();
+
+    if(correo !== ADMIN_EMAIL){
+
+      mostrarEstado(
+        'Este correo no tiene autorización para administrar planillas.'
+      );
+
+      return;
+
+    }
+
+    accionAcceso.disabled = true;
+
+    mostrarEstado(
+      'Enviando enlace seguro…'
+    );
+
+    const respuesta =
+    await supabaseClient.auth.signInWithOtp({
+
+      email: correo,
+
+      options: {
+
+        /*
+         * CAMBIO IMPORTANTE:
+         * Antes:
+         * emailRedirectTo: window.location.origin
+         *
+         * Ahora:
+         * usamos directamente la URL pública de Netlify.
+         */
+
+        emailRedirectTo:
+        'https://heartfelt-snickerdoodle-bb14e9.netlify.app/'
+
+      }
+
+    });
+
+    accionAcceso.disabled = false;
+
+    mostrarEstado(
+
+      respuesta.error
+
+      ? 'No se pudo enviar el enlace: ' +
+        respuesta.error.message
+
+      : 'Revisa tu correo y abre el enlace para continuar.'
+
+    );
+
   }
+);
 
-  const correo = correoAcceso.value.trim().toLowerCase();
-  if(correo !== ADMIN_EMAIL){
-    mostrarEstado('Este correo no tiene autorización para administrar planillas.');
-    return;
+
+guardarPlanilla.addEventListener(
+  'click',
+  async function(){
+
+    const resultado =
+    await supabaseClient.auth.getUser();
+
+    const usuario =
+    resultado.data.user;
+
+    const fecha =
+    document.getElementById(
+      'planilla-fecha'
+    ).value;
+
+    const colaborador =
+    document.getElementById(
+      'planilla-colaborador'
+    ).value;
+
+
+    if(
+      !usuario ||
+      usuario.email !== ADMIN_EMAIL
+    ){
+
+      mostrarEstado(
+        'Debes ingresar como administrador antes de guardar.'
+      );
+
+      return;
+
+    }
+
+
+    if(!fecha){
+
+      mostrarEstado(
+        'Selecciona una fecha antes de guardar.'
+      );
+
+      return;
+
+    }
+
+
+    guardarPlanilla.disabled = true;
+
+
+    const respuesta =
+    await supabaseClient
+    .from('planillas')
+    .insert({
+
+      fecha: fecha,
+
+      colaborador:
+      colaborador === 'Seleccionar colaborador'
+      ? null
+      : colaborador,
+
+      estado: 'Abierta',
+
+      actividades:
+      actividadesAsignadas(),
+
+      creado_por:
+      usuario.id
+
+    });
+
+
+    guardarPlanilla.disabled = false;
+
+
+    mostrarEstado(
+
+      respuesta.error
+
+      ? 'No se pudo guardar: ' +
+        respuesta.error.message
+
+      : 'Planilla guardada correctamente.'
+
+    );
+
   }
+);
 
-  accionAcceso.disabled = true;
-  mostrarEstado('Enviando enlace seguro…');
-  const respuesta = await supabaseClient.auth.signInWithOtp({
-    email: correo,
-    options: { emailRedirectTo: window.location.origin }
-  });
-  accionAcceso.disabled = false;
-  mostrarEstado(respuesta.error ? 'No se pudo enviar el enlace: ' + respuesta.error.message : 'Revisa tu correo y abre el enlace para continuar.');
-});
 
-guardarPlanilla.addEventListener('click', async function(){
-  const resultado = await supabaseClient.auth.getUser();
-  const usuario = resultado.data.user;
-  const fecha = document.getElementById('planilla-fecha').value;
-  const colaborador = document.getElementById('planilla-colaborador').value;
-
-  if(!usuario || usuario.email !== ADMIN_EMAIL){
-    mostrarEstado('Debes ingresar como administrador antes de guardar.');
-    return;
+supabaseClient.auth.onAuthStateChange(
+  function(){
+    actualizarAcceso();
   }
-  if(!fecha){
-    mostrarEstado('Selecciona una fecha antes de guardar.');
-    return;
-  }
+);
 
-  guardarPlanilla.disabled = true;
-  const respuesta = await supabaseClient.from('planillas').insert({
-    fecha: fecha,
-    colaborador: colaborador === 'Seleccionar colaborador' ? null : colaborador,
-    estado: 'Abierta',
-    actividades: actividadesAsignadas(),
-    creado_por: usuario.id
-  });
-  guardarPlanilla.disabled = false;
-  mostrarEstado(respuesta.error ? 'No se pudo guardar: ' + respuesta.error.message : 'Planilla guardada correctamente.');
-});
 
-supabaseClient.auth.onAuthStateChange(function(){ actualizarAcceso(); });
 actualizarAcceso();
+
 </script>
 
+
 <script>
+
 function toggleActivity(el){
-  document.querySelectorAll('.activity.open').forEach(function(item){
-    if(item !== el) item.classList.remove('open');
+
+  document
+  .querySelectorAll('.activity.open')
+  .forEach(function(item){
+
+    if(item !== el){
+
+      item.classList.remove('open');
+
+    }
+
   });
+
   el.classList.toggle('open');
+
 }
+
 </script>
 
+
 <script>
+
 function toggleMoreActivities(){
-  const section = document.querySelector('.card h2');
-  const container = section ? section.closest('.card') : null;
+
+  const section =
+  document.querySelector('.card h2');
+
+  const container =
+  section
+  ? section.closest('.card')
+  : null;
+
   if(!container) return;
-  const expanded = container.classList.toggle('show-extra');
-  const btn = document.getElementById('moreActivities');
-  if(btn) btn.textContent = expanded ? '− Ver menos' : '＋ Ver más actividades';
+
+  const expanded =
+  container.classList.toggle('show-extra');
+
+  const btn =
+  document.getElementById('moreActivities');
+
+  if(btn){
+
+    btn.textContent =
+    expanded
+    ? '− Ver menos'
+    : '＋ Ver más actividades';
+
+  }
+
 }
+
 </script>
 
+
 <script>
+
 function togglePreviewRows(){
-  const card = document.querySelector('section.card.full');
-  const rows = card ? card.querySelectorAll('.preview-extra') : [];
-  const btn = document.getElementById('morePreview');
+
+  const card =
+  document.querySelector(
+    'section.card.full'
+  );
+
+  const rows =
+  card
+  ? card.querySelectorAll('.preview-extra')
+  : [];
+
+  const btn =
+  document.getElementById('morePreview');
+
   if(!card || !btn) return;
-  const expanded = card.classList.toggle('preview-expanded');
-  rows.forEach(function(row){ row.style.display = expanded ? 'table-row' : 'none'; });
-  btn.textContent = expanded ? '− Ver menos' : '＋ Ver más actividades';
+
+  const expanded =
+  card.classList.toggle(
+    'preview-expanded'
+  );
+
+  rows.forEach(function(row){
+
+    row.style.display =
+    expanded
+    ? 'table-row'
+    : 'none';
+
+  });
+
+  btn.textContent =
+  expanded
+  ? '− Ver menos'
+  : '＋ Ver más actividades';
+
 }
+
 </script>
-</body></html>
+
+</body>
+</html>
