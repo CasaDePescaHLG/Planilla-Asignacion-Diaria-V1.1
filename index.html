@@ -412,7 +412,7 @@ Enviar enlace seguro
 
 <div class="toolbar">
 
-<button class="primary">＋ Crear</button>
+<button id="crear-planilla" type="button" class="primary">＋ Crear</button>
 <button class="secondary">Cancelar</button>
 
 </div>
@@ -1053,10 +1053,10 @@ document.addEventListener('DOMContentLoaded', function(){
 <script>
 
 const SUPABASE_URL =
-'https://jjhghflprexdrtypgbzc.supabase.co';
+'https://nmybnozyrrrrsclosonu.supabase.co';
 
 const SUPABASE_PUBLISHABLE_KEY =
-'sb_publishable_ayseY1CkPH5WlyRiMh_H8Q_P0FiLqpm';
+'sb_publishable_HEr6tTfqSo618q0k51JZFA_GWuCDwho';
 
 const ADMIN_EMAIL =
 'casadepescahlg@gmail.com';
@@ -1078,6 +1078,14 @@ document.getElementById('accion-acceso');
 
 const guardarPlanilla =
 document.getElementById('guardar-planilla');
+
+const crearPlanilla =
+document.getElementById('crear-planilla');
+
+const selectorColaborador =
+document.getElementById('planilla-colaborador');
+
+let catalogoActividades = [];
 
 
 function mostrarEstado(mensaje){
@@ -1124,6 +1132,243 @@ function actividadesAsignadas(){
 }
 
 
+function textoActividadNormalizado(texto){
+
+  return texto
+  .replace(/^\d+\.\s*/, '')
+  .trim();
+
+}
+
+
+async function cargarColaboradores(){
+
+  const respuesta =
+  await supabaseClient
+  .from('colaboradores')
+  .select('id,nombre')
+  .eq('activo', true)
+  .order('nombre');
+
+  if(respuesta.error){
+
+    mostrarEstado(
+      'No se pudieron cargar los colaboradores: ' +
+      respuesta.error.message
+    );
+
+    return;
+
+  }
+
+  selectorColaborador.innerHTML =
+  '<option value="">Seleccionar colaborador</option>';
+
+  respuesta.data.forEach(function(colaborador){
+
+    const opcion = document.createElement('option');
+
+    opcion.value = colaborador.id;
+    opcion.textContent = colaborador.nombre;
+
+    selectorColaborador.appendChild(opcion);
+
+  });
+
+}
+
+
+async function cargarCatalogoActividades(){
+
+  const respuesta =
+  await supabaseClient
+  .from('actividades')
+  .select('id,nombre,placeholder,orden')
+  .eq('activa', true)
+  .order('orden');
+
+  if(respuesta.error){
+
+    throw new Error(
+      'No se pudieron cargar las actividades: ' +
+      respuesta.error.message
+    );
+
+  }
+
+  catalogoActividades = respuesta.data;
+
+}
+
+
+function catalogoPorNombre(){
+
+  return new Map(
+    catalogoActividades.map(function(actividad){
+
+      return [actividad.nombre.trim(), actividad];
+
+    })
+  );
+
+}
+
+
+async function guardarPlanillaActual(){
+
+  const resultado =
+  await supabaseClient.auth.getUser();
+
+  const usuario = resultado.data.user;
+
+  const fecha =
+  document.getElementById('planilla-fecha').value;
+
+  const colaboradorId = selectorColaborador.value;
+
+  if(!usuario || usuario.email !== ADMIN_EMAIL){
+
+    mostrarEstado(
+      'Debes ingresar como administrador antes de guardar.'
+    );
+
+    return;
+
+  }
+
+  if(!fecha){
+
+    mostrarEstado('Selecciona una fecha antes de guardar.');
+
+    return;
+
+  }
+
+  if(!colaboradorId){
+
+    mostrarEstado('Selecciona un colaborador antes de guardar.');
+
+    return;
+
+  }
+
+  guardarPlanilla.disabled = true;
+  crearPlanilla.disabled = true;
+
+  try{
+
+    if(!catalogoActividades.length){
+
+      await cargarCatalogoActividades();
+
+    }
+
+    const existentes =
+    await supabaseClient
+    .from('planillas')
+    .select('id')
+    .eq('fecha', fecha)
+    .eq('colaborador_id', colaboradorId)
+    .limit(1);
+
+    if(existentes.error){
+
+      throw existentes.error;
+
+    }
+
+    if(existentes.data.length){
+
+      throw new Error(
+        'Ya existe una Planilla para este colaborador y esta fecha.'
+      );
+
+    }
+
+    const creada =
+    await supabaseClient
+    .from('planillas')
+    .insert({
+      fecha: fecha,
+      colaborador_id: colaboradorId,
+      estado: 'Abierta'
+    })
+    .select('id')
+    .single();
+
+    if(creada.error){
+
+      throw creada.error;
+
+    }
+
+    const actividadesPorNombre = catalogoPorNombre();
+
+    const filasActividades =
+    actividadesAsignadas().map(function(item){
+
+      const actividad =
+      actividadesPorNombre.get(
+        textoActividadNormalizado(item.actividad)
+      );
+
+      if(!actividad){
+
+        throw new Error(
+          'La actividad "' + item.actividad +
+          '" no existe en el catálogo aprobado.'
+        );
+
+      }
+
+      return {
+        planilla_id: creada.data.id,
+        actividad_id: actividad.id,
+        actividad_nombre: actividad.nombre,
+        placeholder: actividad.placeholder,
+        prioridad: item.numero,
+        estado: 'Pendiente',
+        detalle: item.detalle,
+        nota: item.nota || null,
+        motivo_no_realizada: null
+      };
+
+    });
+
+    const actividadesCreadas =
+    await supabaseClient
+    .from('planillas_actividades')
+    .insert(filasActividades);
+
+    if(actividadesCreadas.error){
+
+      await supabaseClient
+      .from('planillas')
+      .delete()
+      .eq('id', creada.data.id);
+
+      throw actividadesCreadas.error;
+
+    }
+
+    mostrarEstado('Planilla guardada correctamente.');
+
+  }catch(error){
+
+    mostrarEstado(
+      'No se pudo guardar: ' + error.message
+    );
+
+  }finally{
+
+    guardarPlanilla.disabled = false;
+    crearPlanilla.disabled = false;
+
+  }
+
+}
+
+
 async function actualizarAcceso(){
 
   const resultado =
@@ -1152,6 +1397,12 @@ async function actualizarAcceso(){
     ? 'Sesión activa: puedes guardar la planilla.'
     : 'Ingresa con tu correo para guardar planillas.'
   );
+
+  if(esAdministrador){
+
+    await cargarColaboradores();
+
+  }
 
 }
 
@@ -1201,17 +1452,19 @@ accionAcceso.addEventListener(
 
       options: {
 
+        shouldCreateUser: false,
+
         /*
          * CAMBIO IMPORTANTE:
          * Antes:
-         * emailRedirectTo: 'https://heartfelt-snickerdoodle-bb14e9.netlify.app/'
-         *
+         * emailRedirectTo: 
+         * window.location.origin
          * Ahora:
          * usamos directamente la URL pública de Netlify.
          */
 
         emailRedirectTo:
-        'https://heartfelt-snickerdoodle-bb14e9.netlify.app/'
+        window.location.origin
 
       }
 
@@ -1236,91 +1489,13 @@ accionAcceso.addEventListener(
 
 guardarPlanilla.addEventListener(
   'click',
-  async function(){
-
-    const resultado =
-    await supabaseClient.auth.getUser();
-
-    const usuario =
-    resultado.data.user;
-
-    const fecha =
-    document.getElementById(
-      'planilla-fecha'
-    ).value;
-
-    const colaborador =
-    document.getElementById(
-      'planilla-colaborador'
-    ).value;
+  guardarPlanillaActual
+);
 
 
-    if(
-      !usuario ||
-      usuario.email !== ADMIN_EMAIL
-    ){
-
-      mostrarEstado(
-        'Debes ingresar como administrador antes de guardar.'
-      );
-
-      return;
-
-    }
-
-
-    if(!fecha){
-
-      mostrarEstado(
-        'Selecciona una fecha antes de guardar.'
-      );
-
-      return;
-
-    }
-
-
-    guardarPlanilla.disabled = true;
-
-
-    const respuesta =
-    await supabaseClient
-    .from('planillas')
-    .insert({
-
-      fecha: fecha,
-
-      colaborador:
-      colaborador === 'Seleccionar colaborador'
-      ? null
-      : colaborador,
-
-      estado: 'Abierta',
-
-      actividades:
-      actividadesAsignadas(),
-
-      creado_por:
-      usuario.id
-
-    });
-
-
-    guardarPlanilla.disabled = false;
-
-
-    mostrarEstado(
-
-      respuesta.error
-
-      ? 'No se pudo guardar: ' +
-        respuesta.error.message
-
-      : 'Planilla guardada correctamente.'
-
-    );
-
-  }
+crearPlanilla.addEventListener(
+  'click',
+  guardarPlanillaActual
 );
 
 
