@@ -1457,14 +1457,14 @@ accionAcceso.addEventListener(
         /*
          * CAMBIO IMPORTANTE:
          * Antes:
-         * emailRedirectTo: 'https://heartfelt-snickerdoodle-bb14e9.netlify.app/'
-         *
+         * emailRedirectTo: 
+         * window.location.origin
          * Ahora:
          * usamos directamente la URL pública de Netlify.
          */
 
         emailRedirectTo:
-        'https://heartfelt-snickerdoodle-bb14e9.netlify.app/'
+        window.location.origin
 
       }
 
